@@ -270,16 +270,47 @@ export class News extends Component {
         this.state = {
             articles: [],
             loading: false,
-            page: 1
+            page: 1,
+
         }
     }
     async componentDidMount() {
         console.log("cdm");
-        let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3";
-        let data  = await fetch(url);
+        let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page=1&pazeSize=18";
+        let data = await fetch(url);
         let parsedData = await data.json()
         console.log(parsedData);
-        this.setState({articles: parsedData.articles})
+        this.setState({ articles: parsedData.articles, totalAtotalResultsrticles: parsedData.totalResults })
+    }
+
+    handlePreviousClick = async () => {
+        console.log("previous clicked");
+        let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page=${this.state.page - 1}&pazeSize=18`;
+        let data = await fetch(url);
+        let parsedData = await data.json()
+        console.log(parsedData);
+        this.setState({
+            page: this.setState.page - 1,
+            articles: parsedData.articles
+        })
+
+    }
+
+    handleNextClick = async () => {
+        if (this.setState.page + 1 > Math.ceil(this.setState.totalResults / 20)) {
+
+        }
+        else {
+            console.log("Next clicked");
+            let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page=${this.state.page + 1}&pazeSize=18`;
+            let data = await fetch(url);
+            let parsedData = await data.json()
+            console.log(parsedData);
+            this.setState({
+                page: this.setState.page + 1,
+                articles: parsedData.articles
+            })
+        }
     }
 
     render() {
@@ -289,14 +320,17 @@ export class News extends Component {
                 <h1>NewFinder - Top Headlines</h1>
                 <div className="row">
                     {this.state.articles.map((element) => {
-                        return <div className="col-md-4">
-                            <div className="col-md-4" key={element.url}>
-                                <NewsItem title={element.title ? element.title.slice(0, 45): ""} description={element.description?element.description.slice(0, 88):""}
+                        return <div className="col-md-4" key={element.url}>
+                            <div className="col-md-4" >
+                                <NewsItem title={element.title ? element.title.slice(0, 45) : ""} description={element.description ? element.description.slice(0, 88) : ""}
                                     imageUrl={element.urlToImage} newsUrl={element.url} />
                             </div>
                         </div>
-
                     })}
+                </div>
+                <div className="container d-flex justify-content-between">
+                    <button disabled={this.state.page <= 1} type="button" className="btn btn-dark" onClick={this.handlePreviousClick}> Previous &larr;</button>
+                    <button type="button" className="btn btn-dark" onClick={this.handleNextClick} > Next &rarr;</button>
                 </div>
             </div>
         )
