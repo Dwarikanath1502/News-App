@@ -5,15 +5,15 @@ import PropTypes from 'prop-types'
 
 export class News extends Component {
     static defaultProps = {
-        country : "in",
-        pageSize : 9,
+        country: "in",
+        pageSize: 9,
         category: 'general'
-       
+
     }
     static propTypes = {
-       country: PropTypes.string,
-       pageSize: PropTypes.number,
-       category: PropTypes.string,
+        country: PropTypes.string,
+        pageSize: PropTypes.number,
+        category: PropTypes.string,
     }
 
     constructor() {
@@ -27,7 +27,7 @@ export class News extends Component {
         }
     }
 
-    async updateNews(){
+    async updateNews() {
         console.log("cdm");
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page={this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true })
@@ -68,8 +68,8 @@ export class News extends Component {
         //     articles: parsedData.articles,
         //     loading: false
         // })
-        
-        this.setState({page: this.state.page-1})
+
+        this.setState({ page: this.state.page - 1 })
         this.updateNews();
 
     }
@@ -89,7 +89,7 @@ export class News extends Component {
         //         loading: false
         //     })
         // }
-        this.setState({page: this.state.page+1})
+        this.setState({ page: this.state.page + 1 })
         this.updateNews();
     }
 
@@ -104,7 +104,7 @@ export class News extends Component {
                         return <div className="col-md-4" key={element.url}>
                             <div className="col-md-4" >
                                 <NewsItem title={element.title ? element.title.slice(0, 45) : ""} description={element.description ? element.description.slice(0, 88) : ""}
-                                    imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source = {element.source.name}/>
+                                    imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
                             </div>
                         </div>
                     })}
