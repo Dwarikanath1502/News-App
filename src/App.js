@@ -25,7 +25,7 @@ export default class App extends Component {
         height={3}
           color='#f11946'
           progress={this.state.progress}
-        />
+        />  
         <Routes>
           {/* <News setProgress={this.setProgress} apiKey={this.apiKey}Item /> */}
           <Route exact path="/" element={<News setProgress={this.setProgress} apiKey={this.apiKey} key="general" pageSize={this.pageSize} country='in' category="general" />}></Route>
