@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
@@ -8,14 +8,13 @@ const News = (props) => {
     const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
-    const [totalResults, setTotalResults] = useState()
+    const [totalResults, setTotalResults] = useState(0)
 
-    // document.title = `${capitalizaFirstLetter(props.category)} - NewsFinder;`
 
-    // const capitalizaFirstLetter = (string) => {
-    //     return string.charAt(0).toUpperCase() + string.slice(1);
+    const capitalizaFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
 
-    // }
+    }
 
     const updateNews = async () => {
         props.setProgress(10);
@@ -36,56 +35,22 @@ const News = (props) => {
 
     }
     useEffect(() => {
+    document.title = `NewsReader - ${capitalizaFirstLetter(props.category)} `
      updateNews();
 
     }, [])
 
 
 
-    const handlePreviousClick = async () => {
-        // console.log("previous clicked");
-        // let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page=${state.page - 1}&pageSize=${props.pageSize}`;
-        // setState({ loading: true })
-        // let data = await fetch(url);
-        // let parsedData = await data.json()
-        // console.log(parsedData);
-        // setState({
-        //     page: setState.page - 1,
-        //     articles: parsedData.articles,
-        //     loading: false
-        // })
+   
 
-        
-        setPage(page-1)
-        updateNews();
-
-    }
-
-    const handleNextClick = async () => {
-        // if (!(setState.page + 1 > Math.ceil(state.totalResults / props.pageSize))) {
-        //     console.log("Next clicked");
-        //     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}
-        //                &category=${props.category}&apiKey=aba0349b6d5d4fb594fedf08fb7bfae3&page=${state.page + 1}
-        //                &pageSize=${props.pageSize}`;
-        //     setState({ loading: true })
-        //     let data = await fetch(url);
-        //     let parsedData = await data.json()
-        //     setState({
-        //         page: setState.page + 1,
-        //         articles: parsedData.articles,
-        //         loading: false
-        //     })
-        // }
-       
-        setPage(page+1)
-        updateNews();
-    }
+    
     const fetchMoreData = async () => {
         // a fake async api call like which sends
         // 20 more records in 1.5 secs
 
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
         setPage(page+1)
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page={state.page}&pageSize=${props.pageSize}`;
         let data = await fetch(url);
         let parsedData = await data.json()
         console.log(parsedData);
@@ -97,8 +62,8 @@ const News = (props) => {
 
     return (
         <div className="container my-4" >
-            <h1 className="text-center">NewFinder - Top Headlines</h1>
-            {/* {loading && <Spinner />} */}
+            <h1 className="text-center" style={{marginTop: '90px'}}>NewFinder - Top Headlines</h1>
+            {loading && <Spinner />}
             <InfiniteScroll
                 dataLength={articles.length}
                 next={fetchMoreData}
